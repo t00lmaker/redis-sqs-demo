@@ -20,15 +20,17 @@ class RedisConfig {
     lateinit var redisPort: String
 
     @Bean
-    fun jedisConnectionFactory(): JedisConnectionFactory? {
-        val jedisConFactory = JedisConnectionFactory()
-        jedisConFactory.hostName = redisHost
-        jedisConFactory.port =  redisPort
-
-        val nodes: List<String> = Collections.singletonList("****.***.****.****.cache.amazonaws.com:6379")
+    fun jedisConnectionFactory(): LettuceConnectionFactory? {
+        val nodes: List<String> = Arrays.asList(
+            "${redisHost}:${7001}",
+            "${redisHost}:${7002}",
+            "${redisHost}:${7003}",
+            "${redisHost}:${7004}",
+            "${redisHost}:${7005}",
+            "${redisHost}:${7006}"
+        )
         val clusterConfiguration = RedisClusterConfiguration(nodes)
-        LettuceConnectionFactory(clusterConfiguration)
-        return jedisConFactory
+        return LettuceConnectionFactory(clusterConfiguration)
     }
 
     @Bean
